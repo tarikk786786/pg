@@ -3,68 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Successful | Dezo</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="index.css">
-</head>
-<body class="success-body">
-
-<div class="success-card glass-panel">
-    <!-- Animated Success Icon -->
-    <div class="success-icon-wrapper">
-        <div class="success-icon-bg"></div>
-        <div class="success-icon">
-            <i class="bi bi-check-lg"></i>
-        </div>
-    </div>
-
-    <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 12px; color: #fff;">Payment Successful!</h1>
-    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6;">Your transaction has been processed securely. A confirmation email has been dispatched to your account.</p>
-
-    <!-- Receipt Details -->
-    <div class="receipt-box">
-        <div class="receipt-row">
-            <span class="receipt-label">Merchant</span>
-            <span class="receipt-value">Dezo Gateway</span>
-        </div>
-        <div class="receipt-row">
-            <span class="receipt-label">Transaction ID</span>
-            <span class="receipt-value" style="font-family: monospace; letter-spacing: 0.5px; color: var(--accent-cyan);">DZ_TXN_<?php echo strtoupper(substr(md5(time()), 0, 10)); ?></span>
-        </div>
-        <div class="receipt-row">
-            <span class="receipt-label">Status</span>
-            <span class="receipt-value" style="background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase;">Verified</span>
-        </div>
-        <div class="receipt-row" style="margin-top: 8px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <span class="receipt-label" style="font-weight: 600; color: #fff;">Amount Paid</span>
-            <span class="receipt-value price">$<?php echo isset($_GET['amount']) ? number_format((float)$_GET['amount'], 2) : "0.00"; ?></span>
-        </div>
-    </div>
-
-    <!-- Actions -->
-    <a href="index.html" class="btn-success">
-        <i class="bi bi-house-door-fill"></i> Return to Homepage
-    </a>
-
-    <!-- Timer -->
-    <div class="timer-text">
-        Redirecting automatically in <span id="timer-sec">8</span>s
-    </div>
-</div>
-
-<script>
-    // Automated redirect timer
-    let count = 8;
-    const timerElement = document.getElementById("timer-sec");
-    const interval = setInterval(() => {
-        count--;
-        timerElement.textContent = count;
-        if (count <= 0) {
-            clearInterval(interval);
-            window.location.href = "index.html";
+    <title>Transaction Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-    }, 1000);
-</script>
-
+        .container {
+            background-color: #fff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        h1 {
+            color: #166534;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 15px;
+            color: #475569;
+            margin-bottom: 30px;
+        }
+        .btn {
+            background-color: #22c55e;
+            color: #fff;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+        }
+        .btn:hover {
+            background-color: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Success icon added here -->
+        <img src="data:image/png;base64,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" alt="Success Icon" class="success-icon">
+        <h1>Payment Successful!</h1>
+        <p>Your transaction has been processed securely. The merchant has received your payment.</p>
+        <a href="index.php" class="btn">Return to Website</a>
+    </div>
 </body>
 </html>
