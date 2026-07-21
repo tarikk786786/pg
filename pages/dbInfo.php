@@ -3,7 +3,7 @@ error_reporting(0);
 date_default_timezone_set('Asia/Kolkata');
 
 // InsForge PostgreSQL connection URL
-$insforge_url = "postgresql://postgres:f76260816cf7fd8b63cd4a11314a0c8f@san4iv3j.us-east.database.insforge.app:5432/insforge?sslmode=require";
+$insforge_url = "postgresql://postgres:f76260816cf7fd8b63cd4a11314a0c8f@san4iv3j.us-east.database.insforge.app:5432/insforge?sslmode=disable";
 
 // Parse URL for PDO
 $parsed = parse_url($insforge_url);
@@ -25,7 +25,7 @@ function connect_database() {
     global $_GLOBAL_PDO, $insforge_url;
     if ($_GLOBAL_PDO !== null) return $_GLOBAL_PDO;
     
-    $dsn = "pgsql:host=" . DB_HOST . ";port=" . parse_url($insforge_url, PHP_URL_PORT) . ";dbname=" . DB_NAME . ";sslmode=require";
+    $dsn = "pgsql:host=" . DB_HOST . ";port=" . parse_url($insforge_url, PHP_URL_PORT) . ";dbname=" . DB_NAME . ";sslmode=disable";
     try {
         $_GLOBAL_PDO = new PDO($dsn, DB_USERNAME, DB_PASSWORD, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
