@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdityaLoot Payment Gateway | Accept Payments, Grow Business</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --bg-color: #04010d;
+            --card-bg: rgba(20, 12, 40, 0.4);
+            --neon-purple: #9d4edd;
+            --neon-purple-g: linear-gradient(135deg, #9d4edd 0%, #7b2cbf 100%);
+            --neon-cyan: #00f2fe;
+            --neon-green: #00ff87;
+            --text-main: #f3f0ff;
+            --text-muted: #9c93b5;
+            --border-glow: rgba(157, 78, 221, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 5% 15%, rgba(157, 78, 221, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 95% 85%, rgba(0, 242, 254, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(4, 1, 13, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 12px 0;
+            background: rgba(4, 1, 13, 0.9);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, #c77dff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--bg-color);
+            font-size: 18px;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Nav links */
+        nav {
+            display: none;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Header Buttons */
+        .header-btns {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-login {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-register {
+            background: linear-gradient(90deg, var(--neon-purple), #7b2cbf);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 11px 26px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.35);
+            transition: all 0.3s;
+        }
+
+        .btn-register:hover {
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 26px;
+            cursor: pointer;
+            display: block;
+        }
+
+        @media (min-width: 992px) {
+            nav {
+                display: block;
+            }
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        /* Mobile Nav Menu Drawer */
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100%;
+            background: #060212;
+            z-index: 1000;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.7);
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer.active {
+            right: 0;
+        }
+
+        .drawer-close {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .drawer-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .drawer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .drawer-link:hover {
+            color: var(--neon-cyan);
+            padding-left: 8px;
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            backdrop-filter: blur(4px);
+            display: none;
+        }
+
+        .backdrop.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 80px 0;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1.1fr 0.9fr;
+            }
+        }
+
+        .hero-badge {
+            background: rgba(157, 78, 221, 0.08);
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            color: #d78eff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.1);
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 58px;
+            }
+        }
+
+        .hero-title span {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(0, 242, 254, 0.1);
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 36px;
+            max-width: 520px;
+        }
+
+        @media (min-width: 768px) {
+            .hero-desc {
+                font-size: 18px;
+            }
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 36px;
+        }
+
+        .tag-pill {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
+        .tag-pill i {
+            color: var(--neon-cyan);
+        }
+
+        .tag-pill.purple i {
+            color: var(--neon-purple);
+        }
+
+        .tag-pill.pink i {
+            color: var(--neon-pink);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--neon-purple), #7b2cbf);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 16px 36px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(157, 78, 221, 0.35);
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 40px rgba(157, 78, 221, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 16px 36px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Glowing Wallet Mockup Illustration (CSS Animated) */
+        .hero-illustration {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 380px;
+        }
+
+        .glow-circle {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.3) 0%, transparent 70%);
+            filter: blur(20px);
+            animation: pulse-glow 4s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Elegant Neon 3D Floating Hero Image */
+        .hero-image-render {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            border-radius: 28px;
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.8),
+                0 0 40px rgba(157, 78, 221, 0.35);
+            animation: float-hero-img 6s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(157, 78, 221, 0.4);
+            background: rgba(20, 12, 40, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        @keyframes float-hero-img {
+            0% { transform: translateY(0) scale(1) rotate(0deg); }
+            50% { transform: translateY(-15px) scale(1.03) rotate(0.5deg); }
+            100% { transform: translateY(0) scale(1) rotate(0deg); }
+        }
+
+        /* Floating Coins */
+        .floating-coin {
+            position: absolute;
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            color: #fff;
+            font-size: 18px;
+            transform-style: preserve-3d;
+        }
+
+        .coin-1 {
+            left: 20px;
+            top: 40px;
+            animation: float-coin-1 6s infinite ease-in-out;
+        }
+
+        .coin-2 {
+            right: 30px;
+            top: 180px;
+            animation: float-coin-2 7s infinite ease-in-out;
+        }
+
+        .coin-3 {
+            left: 100px;
+            bottom: 20px;
+            animation: float-coin-3 5s infinite ease-in-out;
+        }
+
+        @keyframes float-coin-1 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @keyframes float-coin-2 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(-180deg); }
+        }
+
+        @keyframes float-coin-3 {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        .shield-badge {
+            position: absolute;
+            right: 0;
+            top: -10px;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 242, 254, 0.15);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--neon-cyan);
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+            animation: pulse-shield 3s infinite alternate;
+        }
+
+        @keyframes pulse-shield {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        /* Stats Strip */
+        .stats-section {
+            padding: 40px 0;
+            background: rgba(15, 8, 30, 0.4);
+            border-top: 1px solid rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .stat-item h3 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            background: linear-gradient(90deg, #fff, #c77dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-tag {
+            color: var(--neon-purple);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 40px;
+            }
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 36px 30px;
+            border-radius: 24px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(157, 78, 221, 0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(157, 78, 221, 0.1);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(157, 78, 221, 0.1);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--neon-purple);
+            font-size: 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: var(--neon-purple-g);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
+            border-color: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .feature-link {
+            font-size: 14px;
+            color: var(--neon-purple);
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover .feature-link {
+            color: var(--neon-cyan);
+            gap: 10px;
+        }
+
+        /* Dashboard Section */
+        .dashboard-section {
+            padding: 80px 0;
+            background: radial-gradient(circle at 50% 50%, rgba(157, 78, 221, 0.05) 0%, transparent 60%);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1.1fr 0.9fr;
+            }
+        }
+
+        .dashboard-mockup {
+            background: rgba(12, 6, 26, 0.8);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(157, 78, 221, 0.1);
+            position: relative;
+        }
+
+        .mockup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .mockup-logo {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--neon-cyan);
+        }
+
+        .mockup-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .mockup-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .mockup-stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .mockup-stat-card p {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .mockup-stat-card h4 {
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 4px;
+            color: var(--text-main);
+        }
+
+        .mockup-chart-box {
+            height: 120px;
+            background: linear-gradient(180deg, rgba(157, 78, 221, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(157, 78, 221, 0.15);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--neon-cyan);
+            stroke-width: 3;
+            animation: draw-chart 3s infinite linear;
+        }
+
+        .mockup-logs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mockup-log-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .log-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(0, 242, 254, 0.2);
+            color: var(--neon-cyan);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .log-status {
+            background: rgba(0, 255, 135, 0.1);
+            color: var(--neon-green);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .dashboard-content h2 {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-content h2 span {
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dashboard-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .dashboard-feat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .dashboard-feat-item i {
+            color: var(--neon-green);
+            font-size: 18px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(20, 10, 36, 0.9) 0%, rgba(10, 5, 20, 0.95) 100%);
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            border-radius: 36px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(157, 78, 221, 0.15);
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: var(--neon-cyan);
+            filter: blur(80px);
+            top: -50px;
+            left: -50px;
+            opacity: 0.3;
+        }
+
+        .cta-box h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .cta-box h2 {
+                font-size: 44px;
+            }
+        }
+
+        .cta-box p {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto 36px auto;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: #020008;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            padding: 80px 0 30px 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            }
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: 16px;
+            max-width: 240px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            color: var(--text-main);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col ul a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--neon-cyan);
+            padding-left: 4px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .social-link {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--neon-purple-g);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.03);
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+            }
+        }
+
+        /* Full Screen Neon Preloader to prevent unstyled flash on reload */
+        #page-preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #04010d;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .preloader-spinner {
+            width: 65px;
+            height: 65px;
+            border: 4px solid rgba(0, 242, 254, 0.1);
+            border-top-color: var(--neon-cyan);
+            border-bottom-color: var(--neon-purple);
+            border-radius: 50%;
+            animation: preloader-spin 1.2s infinite linear;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
+            margin-bottom: 20px;
+        }
+
+        .preloader-text {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            animation: pulse-text 1.5s infinite alternate;
+        }
+
+        @keyframes preloader-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-text {
+            from { opacity: 0.5; }
+            to { opacity: 1; text-shadow: 0 0 10px rgba(243, 240, 255, 0.4); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Elegant Cyberpunk Preloader -->
+    <div id="page-preloader">
+        <div class="preloader-spinner"></div>
+        <div class="preloader-text">AdityaLoot Loading...</div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header id="header">
+        <div class="container">
+            <div class="header-wrapper">
+                <a href="#" class="logo">
+                    <div class="logo-icon"><i class="bi bi-shield-check"></i></div>
+                    Aditya<span>Loot</span>
+                </a>
+                
+                <nav>
+                    <ul class="nav-list">
+                        <li><a href="#home" class="nav-link active">Home</a></li>
+                        <li><a href="#features" class="nav-link">Features</a></li>
+                        <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="demo" class="nav-link">Demo Page</a></li>
+                        <li><a href="https://wa.me/919219565158" class="nav-link">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-btns">
+                    <a href="auth/index" class="btn-login">Login</a>
+                    <a href="auth/register" class="btn-register">Register</a>
+                    <button class="menu-toggle" onclick="toggleDrawer()"><i class="bi bi-list"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="backdrop" id="backdrop" onclick="toggleDrawer()"></div>
+    <div class="mobile-drawer" id="mobile-drawer">
+        <button class="drawer-close" onclick="toggleDrawer()"><i class="bi bi-x"></i></button>
+        <ul class="drawer-list">
+            <li><a href="#home" class="drawer-link" onclick="toggleDrawer()">Home</a></li>
+            <li><a href="#features" class="drawer-link" onclick="toggleDrawer()">Features</a></li>
+            <li><a href="#dashboard" class="drawer-link" onclick="toggleDrawer()">Dashboard</a></li>
+            <li><a href="demo" class="drawer-link" onclick="toggleDrawer()">Demo Page</a></li>
+            <li><a href="https://wa.me/919219565158" class="drawer-link" onclick="toggleDrawer()">Contact</a></li>
+            <li><hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 10px 0;"></li>
+            <li><a href="auth/index" class="drawer-link" style="color: var(--neon-cyan);">Login Account</a></li>
+            <li><a href="auth/register" class="drawer-link" style="color: var(--neon-purple);">Register Account</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="bi bi-lightning-fill"></i> #1 Trusted Payment Gateway
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        Accept Payments.<br>
+                        <span>Grow Your Business.</span>
+                    </h1>
+                    
+                    <p class="hero-desc">
+                        AdityaLoot Payment Gateway helps you accept payments securely, instantly and hassle-free across India. Join thousands of merchants today.
+                    </p>
+                    
+                    <div class="tag-row">
+                        <div class="tag-pill"><i class="bi bi-check-circle"></i> Fast Settlements</div>
+                        <div class="tag-pill purple"><i class="bi bi-shield-fill-check"></i> 100% Secure</div>
+                        <div class="tag-pill pink"><i class="bi bi-headset"></i> 24/7 Support</div>
+                    </div>
+                    
+                    <div class="hero-actions">
+                        <a href="auth/register" class="btn-primary">
+                            Get Started Now <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a href="https://wa.me/919219565158" class="btn-secondary">
+                            <i class="bi bi-chat-dots"></i> Contact Sales
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-illustration">
+                    <div class="glow-circle"></div>
+                    <img src="finfly_hero.png" class="hero-image-render" alt="FinFly Holographic 3D Payment Illustration">
+                    <div class="floating-coin coin-1">₹</div>
+                    <div class="floating-coin coin-2">₹</div>
+                    <div class="floating-coin coin-3">₹</div>
+                    <div class="shield-badge"><i class="bi bi-shield-fill-check"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Strip -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>10L+</h3>
+                    <p>Happy Businesses</p>
+                </div>
+                <div class="stat-item">
+                    <h3>₹500Cr+</h3>
+                    <p>Processed Volume</p>
+                </div>
+                <div class="stat-item">
+                    <h3>99.9%</h3>
+                    <p>System Uptime</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Customer Support</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Everything You Need</span>
+                <h2 class="section-title">Powerful Features for Modern Businesses</h2>
+                <p class="section-desc">All the tools you need to accept payments, manage transactions and grow your business online with complete ease.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-credit-card-2-front"></i></div>
+                    <h3>Multiple Payment Options</h3>
+                    <p>Accept payments via UPI, Cards, Net Banking, Mobile Wallets and custom QR codes instantly.</p>
+                    <a href="auth/register" class="feature-link">Learn More <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-shield-lock"></i></div>
+                    <h3>Bank Level Security</h3>
+                    <p>256-bit SSL encryption & advanced automated fraud protection engines to keep your funds safe.</p>
+                    <a href="auth/register" class="feature-link">Learn More <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-lightning-charge"></i></div>
+                    <h3>Instant Settlements</h3>
+                    <p>Get instant automated settlements directly into your bank account. Zero delays, maximum velocity.</p>
+                    <a href="auth/register" class="feature-link">Learn More <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Track all payments, active sales and fast refunds in real-time with our sleek interactive insights.</p>
+                    <a href="auth/register" class="feature-link">Learn More <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-code-slash"></i></div>
+                    <h3>Developer Friendly API</h3>
+                    <p>Ultra easy to integrate RESTful APIs, detailed SDK kits and automated sandbox systems.</p>
+                    <a href="auth/register" class="feature-link">Learn More <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-chat-quote"></i></div>
+                    <h3>24/7 Priority Support</h3>
+                    <p>Our designated client success and engineering support teams are ready to help you 24 hours.</p>
+                    <a href="auth/register" class="feature-link">Learn More <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section class="dashboard-section" id="dashboard">
+        <div class="container">
+            <div class="dashboard-grid">
+                <div class="dashboard-mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-logo"><i class="bi bi-cpu-fill"></i> FinFly Dashboard</div>
+                        <div class="mockup-date">Live System Logs</div>
+                    </div>
+                    
+                    <div class="mockup-stats">
+                        <div class="mockup-stat-card">
+                            <p>Transactions</p>
+                            <h4>12,345</h4>
+                        </div>
+                        <div class="mockup-stat-card">
+                            <p>Volume</p>
+                            <h4>₹25,75,000</h4>
+                        </div>
+                        <div class="mockup-stat-card">
+                            <p>Settled</p>
+                            <h4>₹25,00,000</h4>
+                        </div>
+                    </div>
+                    
+                    <div class="mockup-chart-box">
+                        <svg class="chart-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path class="chart-line" d="M0,25 Q15,5 30,20 T60,8 T90,15 T100,5" />
+                        </svg>
+                    </div>
+                    
+                    <div class="mockup-logs">
+                        <div class="mockup-log-item">
+                            <div class="log-left">
+                                <div class="log-avatar">RK</div>
+                                <span>Payment from Rajesh Kumar</span>
+                            </div>
+                            <span class="log-status">₹2,900</span>
+                        </div>
+                        <div class="mockup-log-item">
+                            <div class="log-left">
+                                <div class="log-avatar">PS</div>
+                                <span>Payment from Priya Sharma</span>
+                            </div>
+                            <span class="log-status">₹1,000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <span class="section-tag">Real-time Dashboard</span>
+                    <h2>Manage Everything from <span>One Slick Dashboard</span></h2>
+                    <p class="hero-desc" style="margin-bottom: 24px;">
+                        Monitor your live incoming transactions, track regular settlements, configure instant webhooks, and generate key reports to run your business seamlessly.
+                    </p>
+                    
+                    <ul class="dashboard-features">
+                        <li class="dashboard-feat-item"><i class="bi bi-patch-check-fill"></i> Real-time automated transaction tracking</li>
+                        <li class="dashboard-feat-item"><i class="bi bi-patch-check-fill"></i> Detailed exportable reports & custom analytics</li>
+                        <li class="dashboard-feat-item"><i class="bi bi-patch-check-fill"></i> Single-click smart automated refund management</li>
+                        <li class="dashboard-feat-item"><i class="bi bi-patch-check-fill"></i> Instant custom webhook and settlement logs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Ready to Supercharge Your Business?</h2>
+                <p>Join thousands of active Indian merchants using AdityaLoot Payment Gateway for rapid growth.</p>
+                <div class="hero-actions" style="justify-content: center;">
+                    <a href="auth/register" class="btn-primary">Create Free Account <i class="bi bi-arrow-right"></i></a>
+                    <a href="https://wa.me/919219565158" class="btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon"><i class="bi bi-shield-check"></i></div>
+                        Aditya<span>Loot</span>
+                    </a>
+                    <p>Secure, Fast, and Reliable payment gateway solutions for businesses across India.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#home">About Us</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="demo">Demo Page</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#home">Documentation</a></li>
+                        <li><a href="#home">API Reference</a></li>
+                        <li><a href="#home">Developer Guides</a></li>
+                        <li><a href="#home">System Status</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#home">Terms & Conditions</a></li>
+                        <li><a href="#home">Privacy Policy</a></li>
+                        <li><a href="#home">Refund Policy</a></li>
+                        <li><a href="#home">Compliance Logs</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 AdityaLoot Payment Gateway. All rights reserved.</p>
+                <p>Developer By <a href="https://AdityaLoot.com" target="_blank" style="color: var(--neon-cyan); text-decoration: none; font-weight: bold;">AdityaLoot.com</a> | Made in India</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header shadow transition
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Toggle mobile menu drawer
+        function toggleDrawer() {
+            const drawer = document.getElementById('mobile-drawer');
+            const backdrop = document.getElementById('backdrop');
+            drawer.classList.toggle('active');
+            backdrop.classList.toggle('active');
+        }
+
+        // Fade out preloader smoothly
+        window.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('page-preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                setTimeout(() => {
+                    preloader.remove();
+                }, 400);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+
+RewriteEngine On
+# Rewrite URLs without .php extension to .php files
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^\.]+)/?$ $1.php [L]
+
+
+
+#utr for bharatpe and google pay
+
+RewriteRule ^instantpay/bharatpe/payment-verify payment4/verify.php [NC,L]
+RewriteRule ^instantpay/googlepay/payment-verify payment5/verify.php [NC,L]
+
+#this is for utl for payment and status
+RewriteRule ^order/payment-status  payment/payment_status.php [NC,L]
+RewriteRule ^order2/payment-status payment2/payment_status.php [NC,L]
+RewriteRule ^order3/payment-status payment3/payment_status.php [NC,L]
+RewriteRule ^order4/payment-status payment4/payment_status.php [NC,L]
+RewriteRule ^order5/payment-status payment5/payment_status.php [NC,L]
+
+RewriteRule ^api/create-order payment/create_order.php [NC,L]
+RewriteRule ^api/check-order-status payment/check_order.php [NC,L]
+RewriteRule ^api/bank/create-order payment/bank-payout.php [NC,L]
+RewriteRule ^api/upi/create-order payment/upi-payout.php [NC,L]
+RewriteRule ^api/payout-status payment/payout-status.php [NC,L]
+
+
+
+RewriteRule ^api/instance/events/google-pay corefilesinstance/googlepay/googlepay.php [NC,L]
+RewriteRule ^api/instance/verify/google-pay corefilesinstance/googlepay/googlepayverify.php [NC,L]
+
+
+
+##sunpays latest module with payout
