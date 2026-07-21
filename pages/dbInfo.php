@@ -18,23 +18,20 @@ define('DB_USERNAME', $db_user);
 define('DB_PASSWORD', $db_pass);
 define('DB_NAME', $db_name);
 
-// Global PDO instance
-$_GLOBAL_PDO = null;
+// Global PG connection instance
+$_GLOBAL_PG = null;
 
 function connect_database() {
-    global $_GLOBAL_PDO, $insforge_url;
-    if ($_GLOBAL_PDO !== null) return $_GLOBAL_PDO;
+    global $_GLOBAL_PG, $insforge_url;
+    if ($_GLOBAL_PG !== null) return $_GLOBAL_PG;
     
-    $dsn = "pgsql:host=" . DB_HOST . ";port=" . parse_url($insforge_url, PHP_URL_PORT) . ";dbname=" . DB_NAME . ";sslmode=disable";
-    try {
-        $_GLOBAL_PDO = new PDO($dsn, DB_USERNAME, DB_PASSWORD, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
-        return $_GLOBAL_PDO;
-    } catch (PDOException $e) {
-        die("Database Connection failed: " . $e->getMessage());
+    $conn_string = "host=" . DB_HOST . " port=" . parse_url($insforge_url, PHP_URL_PORT) . " dbname=" . DB_NAME . " user=" . DB_USERNAME . " password=" . DB_PASSWORD . " sslmode=require";
+    
+    $_GLOBAL_PG = pg_connect($conn_string);
+    if (!$_GLOBAL_PG) {
+        die("Database Connection failed: " . pg_last_error());
     }
+    return $_GLOBAL_PG;
 }
 
 // MYSQLI POLYFILL FUNCTIONS
@@ -44,44 +41,43 @@ function db_connect($host, $user, $pass, $db) {
 }
 
 function db_query($con, $query) {
-    if (!$con || !($con instanceof PDO)) $con = connect_database();
+    $con = connect_database();
     
     // MySQL to PostgreSQL syntax fixes
     $query = str_replace('`', '"', $query);
     
-    $stmt = $con->query($query);
-    if ($stmt === false) {
-        // Save error for db_error()
-        $GLOBALS['db_last_error'] = $con->errorInfo()[2] ?? 'Unknown error';
+    $result = @pg_query($con, $query);
+    if ($result === false) {
+        $GLOBALS['db_last_error'] = pg_last_error($con);
         return false;
     }
-    return $stmt;
+    return $result;
 }
 
 function db_fetch_assoc($result) {
-    if ($result && $result instanceof PDOStatement) {
-        return $result->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+        return pg_fetch_assoc($result);
     }
     return null;
 }
 
 function db_fetch_row($result) {
-    if ($result && $result instanceof PDOStatement) {
-        return $result->fetch(PDO::FETCH_NUM);
+    if ($result) {
+        return pg_fetch_row($result);
     }
     return null;
 }
 
 function db_fetch_array($result) {
-    if ($result && $result instanceof PDOStatement) {
-        return $result->fetch(PDO::FETCH_BOTH);
+    if ($result) {
+        return pg_fetch_array($result, null, PGSQL_BOTH);
     }
     return null;
 }
 
 function db_num_rows($result) {
-    if ($result && $result instanceof PDOStatement) {
-        return $result->rowCount();
+    if ($result) {
+        return pg_num_rows($result);
     }
     return 0;
 }
@@ -91,22 +87,31 @@ function db_error($con) {
 }
 
 function db_real_escape_string($con, $string) {
-    if (!$con || !($con instanceof PDO)) $con = connect_database();
+    $con = connect_database();
     if ($string === null) return '';
-    $quoted = $con->quote($string);
-    // PDO quote() adds surrounding quotes, mysqli doesn't. Strip them.
-    return substr($quoted, 1, -1);
+    return pg_escape_string($con, $string);
 }
 
 function db_close($con) {
-    global $_GLOBAL_PDO;
-    $_GLOBAL_PDO = null;
+    global $_GLOBAL_PG;
+    if ($_GLOBAL_PG) {
+        pg_close($_GLOBAL_PG);
+        $_GLOBAL_PG = null;
+    }
     return true;
 }
 
 function db_insert_id($con) {
-    if (!$con || !($con instanceof PDO)) $con = connect_database();
-    return $con->lastInsertId();
+    // In PostgreSQL, last insert id is usually retrieved using RETURNING id
+    // Since this is a polyfill for mysql_insert_id, it is tricky.
+    // We can try to query lastval()
+    $con = connect_database();
+    $res = @pg_query($con, "SELECT lastval()");
+    if ($res) {
+        $row = pg_fetch_row($res);
+        return $row[0];
+    }
+    return 0;
 }
 
 function db_multi_query($con, $query) {
