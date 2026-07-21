@@ -9,21 +9,21 @@ $user = $parsed['user'];
 $pass = $parsed['pass'];
 $db = ltrim($parsed['path'], '/');
 
-echo "Testing SINGLE connection...\n\n";
+echo "Testing connections...\n\n";
 
-$conn_string = "host=$host port=$port dbname=$db user=$user password=$pass sslmode=require connect_timeout=3";
-$conn = @pg_connect($conn_string);
-if ($conn) {
-    echo "pg_connect SUCCESS!\n";
-    pg_close($conn);
-} else {
-    echo "pg_connect FAILED: " . pg_last_error() . "\n";
-}
-
-$dsn = "pgsql:host=$host;port=$port;dbname=$db;sslmode=require";
-try {
-    $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_TIMEOUT => 3]);
-    echo "PDO SUCCESS!\n";
-} catch (PDOException $e) {
-    echo "PDO FAILED: " . $e->getMessage() . "\n";
+$modes = ['disable', 'allow', 'prefer', 'require', 'verify-ca', 'verify-full'];
+foreach ($modes as $mode) {
+    echo "Testing pg_connect with sslmode=$mode...\n";
+    $conn_string = "host=$host port=$port dbname=$db user=$user password=$pass sslmode=$mode connect_timeout=3";
+    
+    // Capture errors
+    error_clear_last();
+    $conn = @pg_connect($conn_string);
+    if ($conn) {
+        echo "SUCCESS!\n";
+        pg_close($conn);
+    } else {
+        $err = error_get_last();
+        echo "FAILED: " . ($err ? $err['message'] : "Unknown error") . "\n";
+    }
 }
