@@ -22,10 +22,21 @@ define('DB_PASSWORD', $dyn_dbPwd);
 define('DB_NAME', $dyn_dbName);
 
 function connect_database() {
-    $con = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-    if (!$con) {
-        die("Database Connection failed: " . mysqli_connect_errno());
+    // If on Vercel and trying to connect to localhost, it will hang until 504 timeout. Fail fast.
+    if (isset($_SERVER['VERCEL']) || isset($_ENV['VERCEL'])) {
+        if (DB_HOST === 'localhost' || DB_HOST === '127.0.0.1') {
+            die("<h1>Database Configuration Required</h1><p>You are running on Vercel, but your database is configured to connect to <code>localhost</code>. Vercel cannot host a local MySQL database.</p><p>Please configure a remote MySQL database (e.g. Aiven, PlanetScale) in <code>pages/dbInfo.php</code>.</p>");
+        }
     }
-    return ($con);
+    
+    // Set a short timeout (3 seconds) to prevent serverless function hanging
+    $con = mysqli_init();
+    mysqli_options($con, MYSQLI_OPT_CONNECT_TIMEOUT, 3);
+    $connected = @mysqli_real_connect($con, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    
+    if (!$connected) {
+        die("Database Connection failed: " . mysqli_connect_error());
+    }
+    return $con;
 }
 ?>

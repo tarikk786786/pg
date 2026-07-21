@@ -41,6 +41,11 @@ if ($request_uri == '/' || $request_uri == '') {
     }
 }
 
+// Prevent infinite loop
+if ($file === 'api/index.php' || $file === '/api/index.php') {
+    $file = 'index.php';
+}
+
 // Check if the target PHP file exists
 if (file_exists($file) && preg_match('/\.php$/', $file)) {
     // We update SCRIPT_FILENAME so PHP scripts think they are accessed directly
