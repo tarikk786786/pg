@@ -1,0 +1,84 @@
+/*!
+Theme Name: Repay
+Theme URI: hhttp://designingmedia.com/repay
+Author: Designing Media
+Author URI: http://designingmedia.com
+Description: Elevate your online payment experience with Repay – a WordPress theme designed for seamless digital transactions. Explore the epitome of secure, efficient, and user-friendly online payments. With advanced features for instant processing, robust security, and flexible payment solutions, Repay is your all-in-one solution for a smart and reliable online payment experience.
+Version: 1.0
+Requires PHP: 7.0
+Tested up to: 5.0
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: repay
+Tags: WordPress online payment, responsive design, customizable themes, secure payment solutions, instant payment processing, flexible payments, fraud prevention, one-click checkout, global payment access, AI-powered security, financial technology, digital transactions, online payment gateway, seamless payments, smart payments, user-friendly design.
+*/
+
+.no-breadcrumbs.page-title-area:after {
+    display: none;
+}
+
+.navbar-area .nav-container .navbar-collapse #menu-all-pages>li+li {
+    margin-left: 10px;
+}
+
+.navbar-area .nav-container .navbar-collapse #menu-all-pages li {
+    padding: 0 7px;
+}
+
+/*Unit test css*/
+
+.navbar-area .nav-container .logo a.retina-logo {
+    display: none;
+}
+
+.wpcf7-form-control-wrap {
+    display: block;
+}
+
+.wpcf7 form .wpcf7-response-output {
+    margin: 1em 0em 0em;
+}
+
+.wpcf7-not-valid-tip {
+    color: #dc3232;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: normal;
+    display: block;
+    margin-top: 0;
+    position: absolute;
+    width: auto;
+    display: block;
+    left: 0;
+    border: none;
+    padding: 0;
+    top: 63px;
+}
+
+.wpcf7-spinner {
+    display: none;
+}
+
+.wpcf7 form.invalid .wpcf7-response-output {
+    display: none;
+}
+
+@media only screen and (max-width: 1366px) {
+    .wpcf7-not-valid-tip {
+        font-size: 12px;
+        line-height: 12px;
+        top: 53px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .wpcf7-not-valid-tip {
+        top: 53px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .wpcf7-not-valid-tip {
+        top: 47px;
+    }
+}

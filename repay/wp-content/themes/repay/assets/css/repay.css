@@ -1,0 +1,283 @@
+/* Elementor Sections Css */
+
+/* Generic css */
+
+.relative-content .e-con-inner {
+    position: relative;
+}
+
+/* Home 01 */
+
+/* Payment Section */
+
+.payment-box:hover .elementor-widget-image-box .elementor-image-box-title {
+    color: var(--e-global-color-white) !important;
+}
+
+.payment-box .elementor-widget-image-box .elementor-image-box-title {
+    margin: 0;
+}
+
+/* Video Section */
+
+.video-icon {
+    width: 196px !important;
+    height: 196px !important;
+}
+
+.video-icon img {
+    width: 196px !important;
+    height: 196px !important;
+}
+
+/* Pricing Section */
+
+.pricing-box:hover .elementor-widget-heading .elementor-heading-title {
+    color: var(--e-global-color-white);
+}
+
+.pricing-box:hover .elementor-widget-text-editor {
+    color: var(--e-global-color-white) !important;
+}
+
+.pricing-box:hover .elementor-widget-image img {
+    filter: none !important;
+}
+
+/* About Page */
+
+/* Faq Section */
+
+.faq-section .elementor-accordion .elementor-accordion-item {
+    margin-bottom: 30px;
+    box-shadow: 0px 2px 100px 0px rgb(0, 0, 0, 0.15);
+    border-radius: 6px;
+}
+
+.faq-section .elementor-accordion .elementor-accordion-item:last-child {
+    margin-bottom: 0;
+}
+
+.faq-section .elementor-accordion .elementor-accordion-item .elementor-tab-title,
+.faq-section .elementor-accordion .elementor-accordion-item .elementor-tab-content {
+    border-radius: 6px;
+}
+
+.faq-section .elementor-accordion .elementor-accordion-item .elementor-tab-title.elementor-active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.faq-section .elementor-accordion .elementor-accordion-item .elementor-tab-content.elementor-active {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* Contact Page */
+
+/* Contact Form Section */
+
+.contact-form-section p {
+    margin-bottom: 0;
+}
+
+.contact-form-section h4 {
+    margin-bottom: 16px;
+    color: var(--e-global-color-very-dark-blue);
+}
+
+.contact-form-section .form-control {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: var(--e-global-color-light-gray);
+    background-color: var(--e-global-color-white);
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+    padding: 20px 20px 20px 30px;
+    margin-bottom: 14px;
+    width: 100%;
+    overflow: visible;
+    outline: none;
+}
+
+.contact-form-section textarea {
+    height: 150px;
+    margin-bottom: 20px !important;
+}
+
+.contact-form-section .form-control::-ms-input-placeholder {
+    /* Edge 12-18 */
+    color: var(--e-global-color-light-gray);
+}
+
+.contact-form-section .form-control::placeholder {
+    color: var(--e-global-color-light-gray);
+}
+
+.contact-form-section .submit {
+    font-size: 16px !important;
+    line-height: 20px !important;
+    font-weight: 400 !important;
+    font-family: var(--e-global-body-font) !important;
+    padding: 20px 54px;
+    border-radius: 6px;
+    color: var(--e-global-color-white) !important;
+    background-color: var(--e-global-color-secondary) !important;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    display: block;
+    text-align: center;
+    outline: none;
+    border-style: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.contact-form-section .submit:hover {
+    background-color: var(--e-global-color-accent) !important;
+}
+
+/* Services Video Section */
+
+.services-video-icon {
+    width: 116px !important;
+    height: 116px !important;
+    box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.2) !important;
+    border-radius: 100px;
+}
+
+.services-video-icon img {
+    width: 116px !important;
+    height: 116px !important;
+}
+
+/* Future Financial Box */
+
+.future-financial-box:hover .elementor-widget-heading .elementor-heading-title {
+    color: var(--e-global-color-white);
+}
+
+/* Home 03 */
+
+/* Newsletter Section */
+
+.newsletter-form .mc4wp-form-fields {
+    width: 540px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.newsletter-form .input {
+    background: var(--e-global-color-white);
+    box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 0.1);
+    height: 70px;
+    border-radius: 6px;
+    color: var(--e-global-color-text);
+    padding: 20px 29px;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.newsletter-form .input:focus {
+    box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 0.1);
+}
+
+.newsletter-form .submit {
+    background: var(--e-global-color-accent);
+    border-radius: 6px;
+    color: var(--e-global-color-white);
+    padding: 18px 36px;
+    border: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.newsletter-form .submit:hover {
+    background: var(--e-global-color-secondary);
+    color: var(--e-global-color-white);
+}
+
+.newsletter-form .mc4wp-response p {
+    margin: 0;
+    text-align: center;
+    padding: 10px 50px 0;
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+/* About 3 */
+
+.work-box:hover .elementor-widget-heading .elementor-heading-title {
+    color: var(--e-global-color-accent) !important;
+}
+
+.work-box:hover .image-outer .elementor-widget-image .elementor-widget-container {
+    background-color: var(--e-global-color-accent) !important;
+}
+
+.work-box:hover .number .elementor-widget-container {
+    background-color: var(--e-global-color-primary) !important;
+}
+
+.work-box:hover .number .elementor-widget-container .elementor-heading-title {
+    color: var(--e-global-color-white) !important;
+}
+
+/* Faq Section */
+
+.about-faq-section .elementor-accordion .elementor-accordion-item {
+    border-bottom: 1px solid #544562 !important;
+}
+
+.about-faq-section .elementor-accordion .elementor-accordion-item:last-child {
+    border-bottom: none !important;
+}
+
+/* Quote Form */
+
+.quote-form .form-control {
+    background-color: #f4f4f4;
+    border: 1px solid #f4f4f4;
+    color: var(--e-global-color-text);
+    padding: 16px 20px;
+}
+
+.quote-form .form-control::-ms-input-placeholder {
+    /* Edge 12-18 */
+    color: var(--e-global-color-text);
+}
+
+.quote-form .form-control::placeholder {
+    color: var(--e-global-color-text);
+}
+
+.quote-form .form-control:focus {
+    background-color: var(--e-global-color-white);
+    box-shadow: 0 0 30px 0 rgba(255, 100, 0, 0.1) !important;
+}
+
+.quote-form textarea {
+    height: 130px;
+}
+
+.quote-form .submit {
+    background-color: var(--e-global-color-accent) !important;
+    width: auto;
+    padding: 20px 62px;
+}
+
+.quote-form .submit:hover {
+    background-color: var(--e-global-color-secondary) !important;
+}
+
+.quote-form .wpcf7-not-valid-tip {
+    font-size: 12px;
+    line-height: 12px;
+    top: 54px;
+}
