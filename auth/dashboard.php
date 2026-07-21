@@ -9,7 +9,7 @@ if (!isset($userdata) || empty($userdata['id'])) {
 }
 
 $user_id = (int)$userdata['id'];
-$mobile = isset($userdata['mobile']) ? mysqli_real_escape_string($conn, $userdata['mobile']) : '';
+$mobile = isset($userdata['mobile']) ? db_real_escape_string($conn, $userdata['mobile']) : '';
 
 // ==================== FETCH RECENT TRANSACTIONS ====================
 $query_recent = $conn->prepare("SELECT create_date, order_id, customer_mobile, utr, amount, status FROM orders WHERE user_id = ? ORDER BY create_date DESC LIMIT 10");

@@ -14,10 +14,10 @@ $server = $_SERVER["SERVER_NAME"] ?? '';
 
 // Fetch site settings from the database
 $query = "SELECT * FROM site_settings LIMIT 1";
-$result = mysqli_query($conn, $query);
+$result = db_query($conn, $query);
 
-if ($result && mysqli_num_rows($result) > 0) {
-    $site_settings = mysqli_fetch_assoc($result);
+if ($result && db_num_rows($result) > 0) {
+    $site_settings = db_fetch_assoc($result);
 } else {
     // Default values in case settings are not found
     $site_settings = [

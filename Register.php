@@ -157,12 +157,12 @@ include 'auth/function.php';
                 $email = $_POST['email'];
 
                 $checkMobileQuery = "SELECT * FROM `users` WHERE `mobile` = '$mobile'";
-                $checkMobileResult = mysqli_query($conn, $checkMobileQuery);
+                $checkMobileResult = db_query($conn, $checkMobileQuery);
 
                 $checkEmailQuery = "SELECT * FROM `users` WHERE `email` = '$email'";
-                $checkEmailResult = mysqli_query($conn, $checkEmailQuery);
+                $checkEmailResult = db_query($conn, $checkEmailQuery);
 
-                if (mysqli_num_rows($checkMobileResult) > 0) {
+                if (db_num_rows($checkMobileResult) > 0) {
                     echo '<script>
                     Swal.fire({
                         title: "Mobile Number Already Exists!",
@@ -173,7 +173,7 @@ include 'auth/function.php';
                     })
                     </script>';
                     exit;
-                } elseif (mysqli_num_rows($checkEmailResult) > 0) {
+                } elseif (db_num_rows($checkEmailResult) > 0) {
                     echo '<script>
                     Swal.fire({
                         title: "Email Already Exists!",
@@ -193,12 +193,12 @@ include 'auth/function.php';
                     $aadhaar = $_POST['aadhaar'];
 
                     $checkpan = "SELECT * FROM `users` WHERE `pan` = '$pan'";
-                    $checkpanResult = mysqli_query($conn, $checkpan);
+                    $checkpanResult = db_query($conn, $checkpan);
 
                     $checkaadhar = "SELECT * FROM `users` WHERE `aadhaar` = '$aadhaar'";
-                    $checkAadharResult = mysqli_query($conn, $checkaadhar);
+                    $checkAadharResult = db_query($conn, $checkaadhar);
 
-                    if (mysqli_num_rows($checkpanResult) > 0) {
+                    if (db_num_rows($checkpanResult) > 0) {
                         echo '<script>
                         Swal.fire({
                             title: "PAN Number Already Exists!",
@@ -209,7 +209,7 @@ include 'auth/function.php';
                         })
                         </script>';
                         exit;
-                    } elseif (mysqli_num_rows($checkAadharResult) > 0) {
+                    } elseif (db_num_rows($checkAadharResult) > 0) {
                         echo '<script>
                         Swal.fire({
                             title: "Aadhaar Number Already Exists!",
@@ -243,7 +243,7 @@ include 'auth/function.php';
                         $register = "INSERT INTO `users`(`name`, `mobile`, `role`, `password`, `email`, `company`, `pin`, `pan`, `aadhaar`, `location`, `user_token`, `expiry`, `instance_id`) 
                         VALUES ('$name', '$mobile', 'User', '$pass', '$email', '$company', '$pin', '$pan', '$aadhaar', '$location', '$key', '$today', '$instanceId')";
 
-                        $result = mysqli_query($conn, $register);
+                        $result = db_query($conn, $register);
 
                         if ($result) {
                             echo '<script>

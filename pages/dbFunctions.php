@@ -239,7 +239,7 @@ function getXbyY($query) {
 
 function setXbyY($query) {
     $con = connect_database();
-    $result = $con->query($query); ////$result = $con->query($query) or die($query . " " . mysqli_error($con));
+    $result = $con->query($query); ////$result = $con->query($query) or die($query . " " . db_error($con));
     $con->close();
     return $result;
 }

@@ -10,8 +10,8 @@ if ($userdata["role"] != 'Admin') {
 
 $mobileno = $_REQUEST['mobileno'] ?? '';
 $qyt = "SELECT * FROM users WHERE mobile='$mobileno'";
-$act = mysqli_query($conn, $qyt);
-$day = mysqli_fetch_array($act);
+$act = db_query($conn, $qyt);
+$day = db_fetch_array($act);
 
 if (!$day) {
     echo '<script>window.location.href = "merchant_list";</script>';
@@ -19,24 +19,24 @@ if (!$day) {
 }
 
 if (isset($_REQUEST['update'])) {
-    $mobilex = mysqli_real_escape_string($conn, $_REQUEST['mobile']);
-    $email = mysqli_real_escape_string($conn, $_REQUEST['email']);
-    $name = mysqli_real_escape_string($conn, $_REQUEST['name']);
-    $company = mysqli_real_escape_string($conn, $_REQUEST['company']);
-    $pin = mysqli_real_escape_string($conn, $_REQUEST['pin']);
-    $pan = mysqli_real_escape_string($conn, $_REQUEST['pan']);
-    $aadhaar = mysqli_real_escape_string($conn, $_REQUEST['aadhaar']);
-    $location = mysqli_real_escape_string($conn, $_REQUEST['location']);
-    $exp = mysqli_real_escape_string($conn, $_REQUEST['expiry']); 
-    $is_otp = mysqli_real_escape_string($conn, $_REQUEST['is_otp'] ?? 'YES'); // OTP option
+    $mobilex = db_real_escape_string($conn, $_REQUEST['mobile']);
+    $email = db_real_escape_string($conn, $_REQUEST['email']);
+    $name = db_real_escape_string($conn, $_REQUEST['name']);
+    $company = db_real_escape_string($conn, $_REQUEST['company']);
+    $pin = db_real_escape_string($conn, $_REQUEST['pin']);
+    $pan = db_real_escape_string($conn, $_REQUEST['pan']);
+    $aadhaar = db_real_escape_string($conn, $_REQUEST['aadhaar']);
+    $location = db_real_escape_string($conn, $_REQUEST['location']);
+    $exp = db_real_escape_string($conn, $_REQUEST['expiry']); 
+    $is_otp = db_real_escape_string($conn, $_REQUEST['is_otp'] ?? 'YES'); // OTP option
 
     $upgc = "UPDATE users SET name='$name', email='$email', company='$company', pin='$pin', pan='$pan', aadhaar='$aadhaar', location='$location', expiry='$exp', is_otp='$is_otp' WHERE mobile='$mobilex'";
-    $resvp = mysqli_query($conn, $upgc);
+    $resvp = db_query($conn, $upgc);
 
     if ($resvp) {
         $admin_id = $userdata['id'];
-        $details = mysqli_real_escape_string($conn, "Updated profile for merchant mobile $mobilex");
-        mysqli_query($conn, "INSERT INTO audit_logs (user_id, action, details) VALUES ($admin_id, 'Update Merchant', '$details')");
+        $details = db_real_escape_string($conn, "Updated profile for merchant mobile $mobilex");
+        db_query($conn, "INSERT INTO audit_logs (user_id, action, details) VALUES ($admin_id, 'Update Merchant', '$details')");
         
         echo '
         <script>
@@ -57,7 +57,7 @@ if (isset($_REQUEST['update'])) {
             Swal.fire({
                 icon: "error",
                 title: "Update Failed!",
-                text: "' . mysqli_error($conn) . '",
+                text: "' . db_error($conn) . '",
                 confirmButtonText: "Ok",
             }).then((result) => {
                 if (result.isConfirmed) {

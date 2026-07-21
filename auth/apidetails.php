@@ -3,24 +3,24 @@ include "header.php";
 
 if(isset($_POST['get_api_token'])){
     $bbbyteuserid=$_SESSION['user_id'];
-    $sanitizedMobile = mysqli_real_escape_string($conn, $mobile);
+    $sanitizedMobile = db_real_escape_string($conn, $mobile);
 
     $uniqueNumber = mt_rand(1000000000, 9999999999);
     $uniqueNumber = str_pad($uniqueNumber, 10, '0', STR_PAD_LEFT); 
 
     $key = md5($uniqueNumber);
     $keyquery = "UPDATE `users` SET user_token='$key' WHERE mobile = '$sanitizedMobile'";
-    $queryres = mysqli_query($conn, $keyquery);
+    $queryres = db_query($conn, $keyquery);
     
-    mysqli_query($conn, "UPDATE `orders` SET user_token='$key' WHERE user_id = $bbbyteuserid");
-    mysqli_query($conn, "UPDATE `reports` SET user_token='$key' WHERE user_id = $bbbyteuserid");
-    mysqli_query($conn, "UPDATE `hdfc` SET user_token='$key' WHERE user_id = $bbbyteuserid");
-    mysqli_query($conn, "UPDATE `bharatpe_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
-    mysqli_query($conn, "UPDATE `phonepe_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
-    mysqli_query($conn, "UPDATE `store_id` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
-    mysqli_query($conn, "UPDATE `paytm_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
-    mysqli_query($conn, "UPDATE `googlepay_transactions` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
-    mysqli_query($conn, "UPDATE `googlepay_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
+    db_query($conn, "UPDATE `orders` SET user_token='$key' WHERE user_id = $bbbyteuserid");
+    db_query($conn, "UPDATE `reports` SET user_token='$key' WHERE user_id = $bbbyteuserid");
+    db_query($conn, "UPDATE `hdfc` SET user_token='$key' WHERE user_id = $bbbyteuserid");
+    db_query($conn, "UPDATE `bharatpe_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
+    db_query($conn, "UPDATE `phonepe_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
+    db_query($conn, "UPDATE `store_id` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
+    db_query($conn, "UPDATE `paytm_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
+    db_query($conn, "UPDATE `googlepay_transactions` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
+    db_query($conn, "UPDATE `googlepay_tokens` SET user_token='$key' WHERE user_id = '$bbbyteuserid'");
     
     if($queryres){
         echo '<script>
@@ -64,7 +64,7 @@ function isValidUrl($url) {
 }
 
 if(isset($_POST['update_webhook'])){
-    $bytecallbackurl=mysqli_real_escape_string($conn,$_POST['webhook_url']);
+    $bytecallbackurl=db_real_escape_string($conn,$_POST['webhook_url']);
     
     if (!isValidUrl($bytecallbackurl)) {
         echo '<script>
@@ -84,9 +84,9 @@ if(isset($_POST['update_webhook'])){
         exit();
     }
 
-    $sanitizedMobile = mysqli_real_escape_string($conn, $mobile);
+    $sanitizedMobile = db_real_escape_string($conn, $mobile);
     $keyquery = "UPDATE `users` SET callback_url='$bytecallbackurl' WHERE mobile = '$sanitizedMobile'";
-    $queryres = mysqli_query($conn, $keyquery);
+    $queryres = db_query($conn, $keyquery);
     
     if($queryres){
         echo '<script>

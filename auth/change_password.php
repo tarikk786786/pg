@@ -7,17 +7,17 @@ if (isset($_REQUEST['update'])) {
     // Assuming $mobile is already defined in header.php
     $sanitizedMobile =  $mobile;
     
-    // Sanitize input using mysqli_real_escape_string
+    // Sanitize input using db_real_escape_string
     $current_password =  $_REQUEST['current_password'];
     $new_password =  $_REQUEST['new_password'];
     $confirm_password =  $_REQUEST['confirm_password'];
 
     // Retrieve the hashed password from the database
     $query = "SELECT `password` FROM `users` WHERE `mobile` = '$sanitizedMobile'";
-    $result = mysqli_query($conn, $query);
+    $result = db_query($conn, $query);
     
     if ($result) {
-        $row = mysqli_fetch_assoc($result);
+        $row = db_fetch_assoc($result);
         $hashedPasswordFromDB = $row['password'];
         
         // Check if the current password matches the stored hashed password
@@ -28,7 +28,7 @@ if (isset($_REQUEST['update'])) {
                 
                 // Update the password in the database
                 $passwor = "UPDATE `users` SET `password` = '$newpass' WHERE `mobile` = '$sanitizedMobile'";
-                $up = mysqli_query($conn, $passwor);
+                $up = db_query($conn, $passwor);
                 
                 if ($up) {
                     // Password changed successfully

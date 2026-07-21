@@ -8,13 +8,13 @@ if ($userdata["role"] != 'Admin') {
 
 if (isset($_POST['reply_ticket'])) {
     $ticket_id = (int)$_POST['ticket_id'];
-    $message = mysqli_real_escape_string($conn, $_POST['message']);
+    $message = db_real_escape_string($conn, $_POST['message']);
     
     // Check if ticket is open
-    $chk = mysqli_query($conn, "SELECT status FROM support_tickets WHERE id = $ticket_id");
-    if ($t = mysqli_fetch_assoc($chk)) {
+    $chk = db_query($conn, "SELECT status FROM support_tickets WHERE id = $ticket_id");
+    if ($t = db_fetch_assoc($chk)) {
         if ($t['status'] == 'Open') {
-            mysqli_query($conn, "INSERT INTO ticket_replies (ticket_id, sender, message) VALUES ($ticket_id, 'Admin', '$message')");
+            db_query($conn, "INSERT INTO ticket_replies (ticket_id, sender, message) VALUES ($ticket_id, 'Admin', '$message')");
             $success = "Reply sent.";
         } else {
             $error = "Cannot reply to a closed ticket.";
@@ -24,7 +24,7 @@ if (isset($_POST['reply_ticket'])) {
 
 if (isset($_POST['close_ticket'])) {
     $ticket_id = (int)$_POST['ticket_id'];
-    mysqli_query($conn, "UPDATE support_tickets SET status = 'Closed' WHERE id = $ticket_id");
+    db_query($conn, "UPDATE support_tickets SET status = 'Closed' WHERE id = $ticket_id");
     $success = "Ticket #$ticket_id closed.";
 }
 
@@ -35,7 +35,7 @@ if ($filter == 'Open') {
     $query .= "WHERE t.status = 'Open' ";
 }
 $query .= "ORDER BY t.id DESC";
-$tickets = mysqli_query($conn, $query);
+$tickets = db_query($conn, $query);
 ?>
 
 <div class="pi-hero-card pi-hero-card-merchant mb-4 p-4 text-white rounded-3">
@@ -60,10 +60,10 @@ $tickets = mysqli_query($conn, $query);
 <?php endif; ?>
 
 <div class="row g-4">
-    <?php if (mysqli_num_rows($tickets) > 0): ?>
-        <?php while($t = mysqli_fetch_assoc($tickets)): 
+    <?php if (db_num_rows($tickets) > 0): ?>
+        <?php while($t = db_fetch_assoc($tickets)): 
             $tid = $t['id'];
-            $replies = mysqli_query($conn, "SELECT * FROM ticket_replies WHERE ticket_id = $tid ORDER BY id ASC");
+            $replies = db_query($conn, "SELECT * FROM ticket_replies WHERE ticket_id = $tid ORDER BY id ASC");
         ?>
         <div class="col-12">
             <div class="pi-card border shadow-sm">
@@ -85,7 +85,7 @@ $tickets = mysqli_query($conn, $query);
                     </div>
                 </div>
                 <div class="p-4" style="max-height: 400px; overflow-y: auto; background:#f8fafc;">
-                    <?php while($r = mysqli_fetch_assoc($replies)): ?>
+                    <?php while($r = db_fetch_assoc($replies)): ?>
                         <div class="mb-3 <?php echo $r['sender'] == 'Admin' ? 'text-end' : 'text-start'; ?>">
                             <div class="d-inline-block p-3 rounded-3 shadow-sm <?php echo $r['sender'] == 'Admin' ? 'bg-primary text-white' : 'bg-white text-dark border'; ?>" style="max-width: 80%; text-align: left;">
                                 <div class="small fw-bold mb-1 <?php echo $r['sender'] == 'Admin' ? 'text-light' : 'text-success'; ?>">

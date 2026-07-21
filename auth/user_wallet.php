@@ -15,29 +15,29 @@ if (isset($_POST['request_payout'])) {
         $error = "Insufficient wallet balance.";
     } else {
         // Deduct from wallet and insert request
-        mysqli_begin_transaction($conn);
+        db_begin_transaction($conn);
         try {
             $deduct = "UPDATE users SET wallet = wallet - $amount WHERE id = $user_id AND wallet >= $amount";
-            $res = mysqli_query($conn, $deduct);
+            $res = db_query($conn, $deduct);
             
-            if (mysqli_affected_rows($conn) > 0) {
+            if (db_affected_rows($conn) > 0) {
                 $insert = "INSERT INTO payout_requests (user_id, amount, status) VALUES ($user_id, $amount, 'Pending')";
-                mysqli_query($conn, $insert);
-                mysqli_commit($conn);
+                db_query($conn, $insert);
+                db_commit($conn);
                 $success = "Payout request submitted successfully. It will be processed soon.";
                 $userdata['wallet'] -= $amount; // update local variable
             } else {
                 throw new Exception("Wallet deduction failed.");
             }
         } catch (Exception $e) {
-            mysqli_rollback($conn);
+            db_rollback($conn);
             $error = "Failed to process request. Try again later.";
         }
     }
 }
 
 // Fetch history
-$history = mysqli_query($conn, "SELECT * FROM payout_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 50");
+$history = db_query($conn, "SELECT * FROM payout_requests WHERE user_id = $user_id ORDER BY id DESC LIMIT 50");
 ?>
 
 <div class="pi-hero-card pi-hero-card-merchant mb-4 p-4 text-white rounded-3">
@@ -95,8 +95,8 @@ $history = mysqli_query($conn, "SELECT * FROM payout_requests WHERE user_id = $u
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (mysqli_num_rows($history) > 0): ?>
-                            <?php while($row = mysqli_fetch_assoc($history)): ?>
+                        <?php if (db_num_rows($history) > 0): ?>
+                            <?php while($row = db_fetch_assoc($history)): ?>
                                 <tr>
                                     <td class="ps-4 fw-bold text-muted">#<?php echo $row['id']; ?></td>
                                     <td class="fw-bold text-dark">₹<?php echo number_format($row['amount'], 2); ?></td>

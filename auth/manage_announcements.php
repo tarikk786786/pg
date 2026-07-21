@@ -7,10 +7,10 @@ if ($userdata["role"] != 'Admin') {
 }
 
 if (isset($_POST['add_announcement'])) {
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $message = mysqli_real_escape_string($conn, $_POST['message']);
+    $title = db_real_escape_string($conn, $_POST['title']);
+    $message = db_real_escape_string($conn, $_POST['message']);
     
-    if (mysqli_query($conn, "INSERT INTO announcements (title, message) VALUES ('$title', '$message')")) {
+    if (db_query($conn, "INSERT INTO announcements (title, message) VALUES ('$title', '$message')")) {
         $success = "Announcement broadcasted successfully.";
     } else {
         $error = "Failed to add announcement.";
@@ -19,11 +19,11 @@ if (isset($_POST['add_announcement'])) {
 
 if (isset($_POST['delete_announcement'])) {
     $id = (int)$_POST['id'];
-    mysqli_query($conn, "DELETE FROM announcements WHERE id = $id");
+    db_query($conn, "DELETE FROM announcements WHERE id = $id");
     $success = "Announcement deleted.";
 }
 
-$announcements = mysqli_query($conn, "SELECT * FROM announcements ORDER BY id DESC");
+$announcements = db_query($conn, "SELECT * FROM announcements ORDER BY id DESC");
 ?>
 
 <div class="pi-hero-card pi-hero-card-merchant mb-4 p-4 text-white rounded-3">
@@ -66,8 +66,8 @@ $announcements = mysqli_query($conn, "SELECT * FROM announcements ORDER BY id DE
     <div class="col-md-7">
         <div class="pi-card p-4">
             <h5 class="fw-bold mb-4"><i class="bi bi-list-stars text-success me-2"></i>Previous Broadcasts</h5>
-            <?php if (mysqli_num_rows($announcements) > 0): ?>
-                <?php while($row = mysqli_fetch_assoc($announcements)): ?>
+            <?php if (db_num_rows($announcements) > 0): ?>
+                <?php while($row = db_fetch_assoc($announcements)): ?>
                     <div class="border rounded-3 p-3 mb-3 bg-light position-relative">
                         <div class="d-flex justify-content-between">
                             <h6 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($row['title']); ?></h6>

@@ -50,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $dbInfoContent .= "\t\$dbLogin = \"$username\";\n";
         $dbInfoContent .= "\t\$dbPwd = \"$password\";\n";
         $dbInfoContent .= "\t\$dbName = \"$dbname\";\n";
-        $dbInfoContent .= "\t\$con = mysqli_connect(\$dbHost, \$dbLogin, \$dbPwd, \$dbName);\n";
+        $dbInfoContent .= "\t\$con = db_connect(\$dbHost, \$dbLogin, \$dbPwd, \$dbName);\n";
         $dbInfoContent .= "\tif (!\$con) {\n";
-        $dbInfoContent .= "\t\tdie(\"Database Connection failed: \" . mysqli_connect_errno());\n";
+        $dbInfoContent .= "\t\tdie(\"Database Connection failed: \" . db_connect_errno());\n";
         $dbInfoContent .= "\t}\n";
         $dbInfoContent .= "\treturn (\$con);\n";
         $dbInfoContent .= "}\n\n";
@@ -71,9 +71,9 @@ $configContent .= "\$conn = new mysqli('$host', '$username', '$password', '$dbna
 $configContent .= "\$server = \$_SERVER[\"SERVER_NAME\"];\n\n";
 $configContent .= "// Fetch site settings from the database\n";
 $configContent .= "\$query = \"SELECT * FROM site_settings LIMIT 1\";\n";
-$configContent .= "\$result = mysqli_query(\$conn, \$query);\n\n";
-$configContent .= "if (\$result && mysqli_num_rows(\$result) > 0) {\n";
-$configContent .= "    \$site_settings = mysqli_fetch_assoc(\$result);\n";
+$configContent .= "\$result = db_query(\$conn, \$query);\n\n";
+$configContent .= "if (\$result && db_num_rows(\$result) > 0) {\n";
+$configContent .= "    \$site_settings = db_fetch_assoc(\$result);\n";
 $configContent .= "} else {\n";
 $configContent .= "    // Default values in case settings are not found\n";
 $configContent .= "    \$site_settings = [\n";

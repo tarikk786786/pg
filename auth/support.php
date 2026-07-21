@@ -6,26 +6,26 @@ include "header.php";
 $user_id = $userdata['id'];
 
 if (isset($_POST['create_ticket'])) {
-    $subject = mysqli_real_escape_string($conn, $_POST['subject']);
-    $message = mysqli_real_escape_string($conn, $_POST['message']);
+    $subject = db_real_escape_string($conn, $_POST['subject']);
+    $message = db_real_escape_string($conn, $_POST['message']);
     
     if (empty($subject) || empty($message)) {
         $error = "Subject and message are required.";
     } else {
-        mysqli_begin_transaction($conn);
+        db_begin_transaction($conn);
         try {
             $insert_ticket = "INSERT INTO support_tickets (user_id, subject, status) VALUES ($user_id, '$subject', 'Open')";
-            if (mysqli_query($conn, $insert_ticket)) {
-                $ticket_id = mysqli_insert_id($conn);
+            if (db_query($conn, $insert_ticket)) {
+                $ticket_id = db_insert_id($conn);
                 $insert_reply = "INSERT INTO ticket_replies (ticket_id, sender, message) VALUES ($ticket_id, 'User', '$message')";
-                mysqli_query($conn, $insert_reply);
-                mysqli_commit($conn);
+                db_query($conn, $insert_reply);
+                db_commit($conn);
                 $success = "Ticket created successfully! We will get back to you soon.";
             } else {
                 throw new Exception("Error creating ticket.");
             }
         } catch (Exception $e) {
-            mysqli_rollback($conn);
+            db_rollback($conn);
             $error = $e->getMessage();
         }
     }
@@ -33,13 +33,13 @@ if (isset($_POST['create_ticket'])) {
 
 if (isset($_POST['reply_ticket'])) {
     $ticket_id = (int)$_POST['ticket_id'];
-    $message = mysqli_real_escape_string($conn, $_POST['message']);
+    $message = db_real_escape_string($conn, $_POST['message']);
     
     // Check if ticket belongs to user and is open
-    $chk = mysqli_query($conn, "SELECT status FROM support_tickets WHERE id = $ticket_id AND user_id = $user_id");
-    if ($t = mysqli_fetch_assoc($chk)) {
+    $chk = db_query($conn, "SELECT status FROM support_tickets WHERE id = $ticket_id AND user_id = $user_id");
+    if ($t = db_fetch_assoc($chk)) {
         if ($t['status'] == 'Open') {
-            mysqli_query($conn, "INSERT INTO ticket_replies (ticket_id, sender, message) VALUES ($ticket_id, 'User', '$message')");
+            db_query($conn, "INSERT INTO ticket_replies (ticket_id, sender, message) VALUES ($ticket_id, 'User', '$message')");
             $success_reply = "Reply sent.";
         } else {
             $error_reply = "Cannot reply to a closed ticket.";
@@ -47,7 +47,7 @@ if (isset($_POST['reply_ticket'])) {
     }
 }
 
-$tickets = mysqli_query($conn, "SELECT * FROM support_tickets WHERE user_id = $user_id ORDER BY id DESC");
+$tickets = db_query($conn, "SELECT * FROM support_tickets WHERE user_id = $user_id ORDER BY id DESC");
 ?>
 
 <div class="pi-hero-card pi-hero-card-merchant mb-4 p-4 text-white rounded-3">
@@ -79,10 +79,10 @@ $tickets = mysqli_query($conn, "SELECT * FROM support_tickets WHERE user_id = $u
 <?php endif; ?>
 
 <div class="row g-4">
-    <?php if (mysqli_num_rows($tickets) > 0): ?>
-        <?php while($t = mysqli_fetch_assoc($tickets)): 
+    <?php if (db_num_rows($tickets) > 0): ?>
+        <?php while($t = db_fetch_assoc($tickets)): 
             $tid = $t['id'];
-            $replies = mysqli_query($conn, "SELECT * FROM ticket_replies WHERE ticket_id = $tid ORDER BY id ASC");
+            $replies = db_query($conn, "SELECT * FROM ticket_replies WHERE ticket_id = $tid ORDER BY id ASC");
         ?>
         <div class="col-12">
             <div class="pi-card border border-light shadow-sm">
@@ -100,7 +100,7 @@ $tickets = mysqli_query($conn, "SELECT * FROM support_tickets WHERE user_id = $u
                     </div>
                 </div>
                 <div class="p-4" style="max-height: 400px; overflow-y: auto; background:#f8fafc;">
-                    <?php while($r = mysqli_fetch_assoc($replies)): ?>
+                    <?php while($r = db_fetch_assoc($replies)): ?>
                         <div class="mb-3 <?php echo $r['sender'] == 'User' ? 'text-end' : 'text-start'; ?>">
                             <div class="d-inline-block p-3 rounded-3 shadow-sm <?php echo $r['sender'] == 'User' ? 'bg-primary text-white' : 'bg-white text-dark border'; ?>" style="max-width: 80%; text-align: left;">
                                 <div class="small fw-bold mb-1 <?php echo $r['sender'] == 'User' ? 'text-light' : 'text-primary'; ?>">

@@ -7,19 +7,19 @@ if ($userdata["role"] != 'Admin') {
 }
 
 // Fetch total users
-$total_users_res = mysqli_query($conn, "SELECT COUNT(*) as c FROM users WHERE role='User'");
-$total_users = mysqli_fetch_assoc($total_users_res)['c'];
+$total_users_res = db_query($conn, "SELECT COUNT(*) as c FROM users WHERE role='User'");
+$total_users = db_fetch_assoc($total_users_res)['c'];
 
 // Fetch total orders
-$total_orders_res = mysqli_query($conn, "SELECT COUNT(*) as c FROM orders");
-$total_orders = mysqli_fetch_assoc($total_orders_res)['c'];
+$total_orders_res = db_query($conn, "SELECT COUNT(*) as c FROM orders");
+$total_orders = db_fetch_assoc($total_orders_res)['c'];
 
 // Fetch success vs fail
-$success_res = mysqli_query($conn, "SELECT COUNT(*) as c FROM orders WHERE status='SUCCESS'");
-$success_count = mysqli_fetch_assoc($success_res)['c'];
+$success_res = db_query($conn, "SELECT COUNT(*) as c FROM orders WHERE status='SUCCESS'");
+$success_count = db_fetch_assoc($success_res)['c'];
 
-$fail_res = mysqli_query($conn, "SELECT COUNT(*) as c FROM orders WHERE status='FAILURE'");
-$fail_count = mysqli_fetch_assoc($fail_res)['c'];
+$fail_res = db_query($conn, "SELECT COUNT(*) as c FROM orders WHERE status='FAILURE'");
+$fail_count = db_fetch_assoc($fail_res)['c'];
 
 ?>
 

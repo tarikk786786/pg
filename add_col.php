@@ -11,7 +11,7 @@ $sql1 = "CREATE TABLE IF NOT EXISTS `approved_domains` (
   `created_at` timestamp DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-mysqli_query($conn, $sql1);
+db_query($conn, $sql1);
 
 // 2. website_settings table
 $sql2 = "CREATE TABLE IF NOT EXISTS `website_settings` (
@@ -25,12 +25,12 @@ $sql2 = "CREATE TABLE IF NOT EXISTS `website_settings` (
   `updated_at` timestamp DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-mysqli_query($conn, $sql2);
+db_query($conn, $sql2);
 
 // Check if website_settings is empty, insert default
-$check = mysqli_query($conn, "SELECT * FROM website_settings");
-if(mysqli_num_rows($check) == 0){
-    mysqli_query($conn, "INSERT INTO website_settings (title, contact_email) VALUES ('Super Admin Dashboard', 'admin@example.com')");
+$check = db_query($conn, "SELECT * FROM website_settings");
+if(db_num_rows($check) == 0){
+    db_query($conn, "INSERT INTO website_settings (title, contact_email) VALUES ('Super Admin Dashboard', 'admin@example.com')");
 }
 
 // 3. admin_payments table
@@ -46,15 +46,15 @@ $sql3 = "CREATE TABLE IF NOT EXISTS `admin_payments` (
   `created_at` timestamp DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-mysqli_query($conn, $sql3);
+db_query($conn, $sql3);
 
 // 4. Update users table for status
 $sql4 = "ALTER TABLE `users` ADD COLUMN `status` enum('active','disabled') DEFAULT 'active' AFTER `acc_ban`";
-mysqli_query($conn, $sql4);
+db_query($conn, $sql4);
 
 // 5. Update gift_codes table for created_by
 $sql5 = "ALTER TABLE `gift_codes` ADD COLUMN `created_by` int(11) DEFAULT 0 AFTER `amount`";
-mysqli_query($conn, $sql5);
+db_query($conn, $sql5);
 
 echo "Database updates complete!";
 ?>

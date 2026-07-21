@@ -3,20 +3,20 @@ include "config.php";
 include 'function.php';
 
 if(isset($_POST['submit'])){
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $pan = mysqli_real_escape_string($conn, $_POST['pan']);
+    $username = db_real_escape_string($conn, $_POST['username']);
+    $pan = db_real_escape_string($conn, $_POST['pan']);
 
     $pass = rand(000000, 999999);
     $password = password_hash($pass, PASSWORD_BCRYPT);
 
     $fetch = "SELECT * FROM users WHERE mobile='$username'";
-    $res = mysqli_query($conn, $fetch);
-    $row = mysqli_fetch_array($res);
+    $res = db_query($conn, $fetch);
+    $row = db_fetch_array($res);
 
-    if(mysqli_num_rows($res) > 0){
+    if(db_num_rows($res) > 0){
         if($pan == $row['pan']){
             $update = "UPDATE users SET password='$password' WHERE mobile='$username'";
-            $quer = mysqli_query($conn, $update);
+            $quer = db_query($conn, $update);
 
             if($quer){
                 $msg = "Dear " . $row['name'] . ",\n\nYour New Password is below:\n*Password:* $pass\n\nThanks & Regards,\n" . $site_settings['brand_name'];

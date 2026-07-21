@@ -11,8 +11,8 @@ if (empty($_SESSION['csrf_token'])) {
 if (isset($_SESSION['username'])) {
     $mobile = $_SESSION['username'];
     $user = "SELECT * FROM users WHERE mobile = '$mobile'";
-    $uu = mysqli_query($conn, $user);
-    $userdata = mysqli_fetch_array($uu);
+    $uu = db_query($conn, $user);
+    $userdata = db_fetch_array($uu);
     
     $tdate = date("Y-m-d");
     $todayallpayment = $conn->query("SELECT COUNT(`id`) as amt FROM `orders` WHERE `user_id` = '{$userdata["id"]}' AND `status` = 'SUCCESS' AND DATE(`create_date`) = '$tdate' ")->fetch_assoc();

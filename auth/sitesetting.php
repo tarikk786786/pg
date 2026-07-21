@@ -15,8 +15,8 @@ $message = "";
 
 // Fetch existing settings from the database
 $query = "SELECT * FROM site_settings LIMIT 1";
-$result = mysqli_query($conn, $query);
-$settings = mysqli_fetch_assoc($result);
+$result = db_query($conn, $query);
+$settings = db_fetch_assoc($result);
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,18 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($settings) {
         // Update existing record
         $update_query = "UPDATE site_settings SET brand_name='$brand_name', logo_url='$logo_url', site_link='$site_link', whatsapp_number='$whatsapp_number', copyright_text='$copyright_text' WHERE id=".$settings['id'];
-        if (mysqli_query($conn, $update_query)) {
+        if (db_query($conn, $update_query)) {
             $message = "Settings updated successfully.";
         } else {
-            $message = "Error updating settings: " . mysqli_error($conn);
+            $message = "Error updating settings: " . db_error($conn);
         }
     } else {
         // Insert new record
         $insert_query = "INSERT INTO site_settings (brand_name, logo_url, site_link, whatsapp_number, copyright_text) VALUES ('$brand_name', '$logo_url', '$site_link', '$whatsapp_number', '$copyright_text')";
-        if (mysqli_query($conn, $insert_query)) {
+        if (db_query($conn, $insert_query)) {
             $message = "Settings saved successfully.";
         } else {
-            $message = "Error saving settings: " . mysqli_error($conn);
+            $message = "Error saving settings: " . db_error($conn);
         }
     }
 

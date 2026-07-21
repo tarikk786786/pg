@@ -8,34 +8,34 @@ if ($userdata["role"] != 'Admin') {
 
 if (isset($_POST['update_status'])) {
     $req_id = (int)$_POST['req_id'];
-    $status = mysqli_real_escape_string($conn, $_POST['status']);
+    $status = db_real_escape_string($conn, $_POST['status']);
     
-    mysqli_begin_transaction($conn);
+    db_begin_transaction($conn);
     try {
-        $check = mysqli_query($conn, "SELECT * FROM payout_requests WHERE id = $req_id AND status = 'Pending'");
-        if ($req = mysqli_fetch_assoc($check)) {
+        $check = db_query($conn, "SELECT * FROM payout_requests WHERE id = $req_id AND status = 'Pending'");
+        if ($req = db_fetch_assoc($check)) {
             $user_id = $req['user_id'];
             $amount = $req['amount'];
 
             // Update request status
-            mysqli_query($conn, "UPDATE payout_requests SET status = '$status', processed_at = CURRENT_TIMESTAMP WHERE id = $req_id");
+            db_query($conn, "UPDATE payout_requests SET status = '$status', processed_at = CURRENT_TIMESTAMP WHERE id = $req_id");
             
             if ($status == 'Rejected') {
                 // Refund wallet
-                mysqli_query($conn, "UPDATE users SET wallet = wallet + $amount WHERE id = $user_id");
+                db_query($conn, "UPDATE users SET wallet = wallet + $amount WHERE id = $user_id");
             }
-            mysqli_commit($conn);
+            db_commit($conn);
             $success = "Payout request #$req_id marked as $status.";
         } else {
             throw new Exception("Invalid or already processed request.");
         }
     } catch (Exception $e) {
-        mysqli_rollback($conn);
+        db_rollback($conn);
         $error = $e->getMessage();
     }
 }
 
-$requests = mysqli_query($conn, "SELECT p.*, u.name, u.mobile, u.company FROM payout_requests p JOIN users u ON p.user_id = u.id ORDER BY p.id DESC");
+$requests = db_query($conn, "SELECT p.*, u.name, u.mobile, u.company FROM payout_requests p JOIN users u ON p.user_id = u.id ORDER BY p.id DESC");
 ?>
 
 <div class="pi-hero-card pi-hero-card-merchant mb-4 p-4 text-white rounded-3">
@@ -71,8 +71,8 @@ $requests = mysqli_query($conn, "SELECT p.*, u.name, u.mobile, u.company FROM pa
                 </tr>
             </thead>
             <tbody>
-                <?php if (mysqli_num_rows($requests) > 0): ?>
-                    <?php while($row = mysqli_fetch_assoc($requests)): ?>
+                <?php if (db_num_rows($requests) > 0): ?>
+                    <?php while($row = db_fetch_assoc($requests)): ?>
                         <tr>
                             <td class="fw-bold text-muted">#<?php echo $row['id']; ?></td>
                             <td>

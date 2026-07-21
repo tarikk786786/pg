@@ -13,10 +13,10 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
 
     $query = "SELECT * FROM users WHERE mobile = '$username'";
-    $run = mysqli_query($conn, $query);
-    $row = mysqli_fetch_array($run);
+    $run = db_query($conn, $query);
+    $row = db_fetch_array($run);
 
-    if (mysqli_num_rows($run) > 0) {
+    if (db_num_rows($run) > 0) {
         $hashFromDatabase = $row['password'];
         $acc_lock = $row['acc_lock'];
         $acc_ban = $row['acc_ban'];
@@ -43,14 +43,14 @@ if (isset($_POST['submit'])) {
                 $_SESSION['user_id'] = $byteuserid;
 
                 $query = "UPDATE users SET acc_lock = 0 WHERE mobile = '$username'";
-                mysqli_query($conn, $query);
+                db_query($conn, $query);
 
                 echo '<script>window.location.href = "dashboard.php";</script>';
                 exit;
             } else {
                 $acc_lock++;
                 $query = "UPDATE users SET acc_lock = $acc_lock WHERE mobile = '$username'";
-                mysqli_query($conn, $query);
+                db_query($conn, $query);
 
                 if ($acc_lock >= 3) {
                     echo '

@@ -7,8 +7,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     if (!isset($_SESSION['username'])) { header("Location: index"); exit; }
 
     $mobile   = $_SESSION['username'];
-    $uu       = mysqli_query($conn, "SELECT * FROM users WHERE mobile = '$mobile'");
-    $userdata = mysqli_fetch_array($uu);
+    $uu       = db_query($conn, "SELECT * FROM users WHERE mobile = '$mobile'");
+    $userdata = db_fetch_array($uu);
 
     $from    = isset($_GET['from']) ? $_GET['from'] : date('Y-m-d', strtotime('-30 days'));
     $to      = isset($_GET['to'])   ? $_GET['to']   : date('Y-m-d');
@@ -27,10 +27,10 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         $where = "create_date BETWEEN '$from_dt' AND '$to_dt'";
     }
     if (!empty($status)) {
-        $where .= " AND status = '" . mysqli_real_escape_string($conn, $status) . "'";
+        $where .= " AND status = '" . db_real_escape_string($conn, $status) . "'";
     }
     if (!empty($search)) {
-        $s = mysqli_real_escape_string($conn, $search);
+        $s = db_real_escape_string($conn, $search);
         $where .= " AND (order_id LIKE '%$s%' OR utr LIKE '%$s%' OR customer_mobile LIKE '%$s%' OR customer_name LIKE '%$s%')";
     }
 
@@ -310,10 +310,10 @@ while ($row = $app_mix_query->fetch_assoc()) {
                 } else {
                     $table_query = "SELECT * FROM `orders` WHERE create_date BETWEEN '$from_dt' AND '$to_dt' ORDER BY id DESC";
                 }
-                $table_run = mysqli_query($conn, $table_query);
+                $table_run = db_query($conn, $table_query);
 
-                if ($table_run && mysqli_num_rows($table_run) > 0) {
-                    while ($row = mysqli_fetch_assoc($table_run)) {
+                if ($table_run && db_num_rows($table_run) > 0) {
+                    while ($row = db_fetch_assoc($table_run)) {
                         $status = strtoupper($row['status']);
                         $status_class = ($status == "SUCCESS") ? "pi-badge pi-badge-success" : (($status == "PENDING") ? "pi-badge pi-badge-warning" : "pi-badge pi-badge-danger");
                         ?>

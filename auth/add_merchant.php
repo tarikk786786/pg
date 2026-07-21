@@ -7,18 +7,18 @@ if ($userdata["role"] != 'Admin') {
 }
 
 if (isset($_POST['create'])) {
-    $mobile = mysqli_real_escape_string($conn, $_POST['mobile']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $mobile = db_real_escape_string($conn, $_POST['mobile']);
+    $email = db_real_escape_string($conn, $_POST['email']);
 
     // Check if the mobile number already exists in the database
     $checkMobileQuery = "SELECT * FROM `users` WHERE `mobile` = '$mobile'";
-    $checkMobileResult = mysqli_query($conn, $checkMobileQuery);
+    $checkMobileResult = db_query($conn, $checkMobileQuery);
 
     // Check if the email already exists in the database
     $checkEmailQuery = "SELECT * FROM `users` WHERE `email` = '$email'";
-    $checkEmailResult = mysqli_query($conn, $checkEmailQuery);
+    $checkEmailResult = db_query($conn, $checkEmailQuery);
 
-    if (mysqli_num_rows($checkMobileResult) > 0) {
+    if (db_num_rows($checkMobileResult) > 0) {
         echo '
         <script>
             Swal.fire({
@@ -33,7 +33,7 @@ if (isset($_POST['create'])) {
             });
         </script>';
         exit;
-    } elseif (mysqli_num_rows($checkEmailResult) > 0) {
+    } elseif (db_num_rows($checkEmailResult) > 0) {
         echo '
         <script>
             Swal.fire({
@@ -50,13 +50,13 @@ if (isset($_POST['create'])) {
         exit;
     } else {
         // Proceed with user registration
-        $password = mysqli_real_escape_string($conn, $_POST['password']);
-        $name = mysqli_real_escape_string($conn, $_POST['name']);
-        $company = mysqli_real_escape_string($conn, $_POST['company']);
-        $pin = mysqli_real_escape_string($conn, $_POST['pin']);
-        $pan = mysqli_real_escape_string($conn, $_POST['pan']);
-        $aadhaar = mysqli_real_escape_string($conn, $_POST['aadhaar']);
-        $location = mysqli_real_escape_string($conn, $_POST['location']);
+        $password = db_real_escape_string($conn, $_POST['password']);
+        $name = db_real_escape_string($conn, $_POST['name']);
+        $company = db_real_escape_string($conn, $_POST['company']);
+        $pin = db_real_escape_string($conn, $_POST['pin']);
+        $pan = db_real_escape_string($conn, $_POST['pan']);
+        $aadhaar = db_real_escape_string($conn, $_POST['aadhaar']);
+        $location = db_real_escape_string($conn, $_POST['location']);
         
         $key = md5(rand(00000000, 99999999));
         $pass = password_hash($password, PASSWORD_BCRYPT);
@@ -67,7 +67,7 @@ if (isset($_POST['create'])) {
         $register = "INSERT INTO `users`(`name`, `mobile`, `role`, `password`, `email`, `company`, `pin`, `pan`, `aadhaar`, `location`, `user_token`, `expiry`) 
                      VALUES ('$name','$mobile','User','$pass','$email','$company','$pin','$pan','$aadhaar','$location','$key','$expiry_date')";
         
-        $result = mysqli_query($conn, $register);
+        $result = db_query($conn, $register);
 
         if ($result) {
             echo '
@@ -89,7 +89,7 @@ if (isset($_POST['create'])) {
             <script>
                 Swal.fire({
                     title: "Failed!",
-                    text: "Something went wrong while creating the merchant. Error: ' . mysqli_error($conn) . '",
+                    text: "Something went wrong while creating the merchant. Error: ' . db_error($conn) . '",
                     confirmButtonText: "Ok",
                     icon: "error"
                 }).then((result) => {

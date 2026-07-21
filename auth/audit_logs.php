@@ -6,7 +6,7 @@ if ($userdata["role"] != 'Admin') {
     exit;
 }
 
-$logs = mysqli_query($conn, "SELECT a.*, u.name as admin_name FROM audit_logs a JOIN users u ON a.user_id = u.id ORDER BY a.id DESC LIMIT 100");
+$logs = db_query($conn, "SELECT a.*, u.name as admin_name FROM audit_logs a JOIN users u ON a.user_id = u.id ORDER BY a.id DESC LIMIT 100");
 ?>
 
 <div class="pi-hero-card pi-hero-card-merchant mb-4 p-4 text-white rounded-3">
@@ -34,8 +34,8 @@ $logs = mysqli_query($conn, "SELECT a.*, u.name as admin_name FROM audit_logs a 
                 </tr>
             </thead>
             <tbody>
-                <?php if (mysqli_num_rows($logs) > 0): ?>
-                    <?php while($row = mysqli_fetch_assoc($logs)): ?>
+                <?php if (db_num_rows($logs) > 0): ?>
+                    <?php while($row = db_fetch_assoc($logs)): ?>
                         <tr>
                             <td class="small text-muted">#<?php echo $row['id']; ?></td>
                             <td class="small text-muted"><?php echo date('d M Y, h:i A', strtotime($row['created_at'])); ?></td>

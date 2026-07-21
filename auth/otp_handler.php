@@ -20,9 +20,9 @@ if (strlen($mobile) !== 10) {
 
 if ($action === 'send_otp') {
     // Check if mobile already exists
-    $mobile = mysqli_real_escape_string($conn, $mobile);
-    $checkMobile = mysqli_query($conn, "SELECT id FROM users WHERE mobile = '$mobile'");
-    if (mysqli_num_rows($checkMobile) > 0) {
+    $mobile = db_real_escape_string($conn, $mobile);
+    $checkMobile = db_query($conn, "SELECT id FROM users WHERE mobile = '$mobile'");
+    if (db_num_rows($checkMobile) > 0) {
         echo json_encode(['status' => 'error', 'message' => 'Mobile number already registered']);
         exit;
     }

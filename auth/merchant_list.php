@@ -7,9 +7,9 @@ if ($userdata["role"] != 'Admin') {
 }
 
 if (isset($_POST['delete'])) {
-    $mb = mysqli_real_escape_string($conn, $_POST['mobileno']);
+    $mb = db_real_escape_string($conn, $_POST['mobileno']);
     $del = "DELETE FROM `users` WHERE mobile='$mb'";
-    $rpt = mysqli_query($conn, $del);
+    $rpt = db_query($conn, $del);
 
     if ($rpt) {
         echo '
@@ -31,7 +31,7 @@ if (isset($_POST['delete'])) {
             Swal.fire({
                 icon: "error",
                 title: "Failed to Delete User!",
-                text: "' . mysqli_error($conn) . '",
+                text: "' . db_error($conn) . '",
                 confirmButtonText: "Ok",
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -82,10 +82,10 @@ if (isset($_POST['delete'])) {
             <tbody>
                 <?php
                 $query = "SELECT `id`, `name`, `mobile`, `role`, `company`, `pan`, `aadhaar`, `location`, `expiry` FROM `users` WHERE role='User' ORDER BY id DESC";
-                $query_run = mysqli_query($conn, $query);
+                $query_run = db_query($conn, $query);
 
-                if ($query_run && mysqli_num_rows($query_run) > 0) {
-                    while ($row = mysqli_fetch_assoc($query_run)) {
+                if ($query_run && db_num_rows($query_run) > 0) {
+                    while ($row = db_fetch_assoc($query_run)) {
                         $is_expired = (strtotime($row['expiry']) < strtotime(date('Y-m-d')));
                         $expiry_class = $is_expired ? 'text-danger fw-bold' : 'text-success fw-bold';
                 ?>
