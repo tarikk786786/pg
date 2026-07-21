@@ -3,7 +3,7 @@ error_reporting(0);
 date_default_timezone_set('Asia/Kolkata');
 
 // InsForge PostgreSQL connection URL
-$insforge_url = "postgresql://postgres:f76260816cf7fd8b63cd4a11314a0c8f@san4iv3j.us-east.database.insforge.app:6543/insforge?sslmode=require";
+$insforge_url = "postgresql://postgres:f76260816cf7fd8b63cd4a11314a0c8f@san4iv3j.us-east.database.insforge.app:5432/insforge?sslmode=require";
 
 // Parse URL for PDO
 $parsed = parse_url($insforge_url);
